@@ -1,3 +1,5 @@
+use sp_core::OpaquePeerId; // A struct wraps Vec<u8> to represent the node `PeerId`.
+use node_template_runtime::NodeAuthorizationConfig; // The genesis config that serves the pallet.
 use node_template_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SudoConfig,
 	SystemConfig, WASM_BINARY,
@@ -133,6 +135,18 @@ fn testnet_genesis(
 	_enable_println: bool,
 ) -> GenesisConfig {
 	GenesisConfig {
+	node_authorization: NodeAuthorizationConfig {
+		nodes: vec![
+			(
+			OpaquePeerId(bs58::decode("12D3KooWBmAwcd4PJNJvfV89HwE48nwkRmAgo8Vy3uQEyNNHBox2").into_vec().unwrap()),
+			endowed_accounts[0].clone()
+			),
+			(
+			OpaquePeerId(bs58::decode("12D3KooWQYV9dGMFoRzNStwpXztXaBUjtPqi6aU76ZgUriHhKust").into_vec().unwrap()),
+			endowed_accounts[1].clone()
+			),
+		],
+		},
 		system: SystemConfig {
 			// Add Wasm runtime to storage.
 			code: wasm_binary.to_vec(),
